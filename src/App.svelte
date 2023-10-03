@@ -1,7 +1,6 @@
 <script>
-  import anime from 'animejs'
-  import { utilities } from './utilities.js'
   import { registers, register_config } from './store.js'
+  import { basic } from './basic.js'
   import Button from './lib/Button.svelte'
   import Node from './lib/Node.svelte'
   $: {
@@ -12,94 +11,35 @@
     });
   }
   const exchange = (regName1, index1, regName2, index2) => {
-    const id1 = `${regName1}_${$registers.find(register => register.name === regName1).size}_${index1}`
-    const id2 = `${regName2}_${$registers.find(register => register.name === regName2).size}_${index2}`
-    const diff = utilities.calcCoordinatesDiffById(id1, id2)
-    anime({
-      targets: `#${id1}`,
-      translateX: diff.diffX,
-      translateY: diff.diffY,
-      rotate: '0turn',
-      duration: 800,
-    })
-    anime({
-      targets: `#${id2}`,
-      translateX: -diff.diffX,
-      translateY: -diff.diffY,
-      rotate: '0turn',
-      duration: 800,
-      complete: () => {
-        registers.update(regs => {
-          const reg1 = regs.find(register => register.name === regName1)
-          const reg2 = regs.find(register => register.name === regName2)
-          const tmp = reg1.values[index1]
-          reg1.values[index1] = reg2.values[index2]
-          reg2.values[index2] = tmp
-          return regs
-        })
-        anime({
-          targets: `#${id1}`,
-          translateX: 0,
-          translateY: 0,
-          duration: 0,
-        })
-        anime({
-          targets: `#${id2}`,
-          translateX: 0,
-          translateY: 0,
-          duration: 0,
-        })
-      },
-    })
+    basic.exchange($registers, () => {
+      registers.update(regs => {
+        const reg1 = regs.find(register => register.name === regName1)
+        const reg2 = regs.find(register => register.name === regName2)
+        const tmp = reg1.values[index1]
+        reg1.values[index1] = reg2.values[index2]
+        reg2.values[index2] = tmp
+        return regs
+      })
+    }, regName1, index1, regName2, index2)
   }
   const assignment = (regName, index, newValue) => {
-    anime({
-      targets: `#${regName}_${$registers.find(register => register.name === regName).size}_${index}`,
-      translateY: [
-        { value: -50, duration: 200, easing: 'easeOutQuad' },
-        { value: 0, duration: 200, easing: 'easeInQuad' },
-      ],
-      rotate: [
-        { value: 15, duration: 100, easing: 'easeOutQuad' },
-        { value: -15, duration: 100, easing: 'easeInQuad' },
-        { value: 0, duration: 100, easing: 'easeOutQuad' },
-      ],
-      duration: 0,
-      complete: () => {
-        registers.update(regs => {
-          const reg = regs.find(register => register.name === regName)
-          reg.values[index] = newValue
-          return regs
-        })
-      },
-    })
+    basic.assignment($registers, () => {
+      registers.update(regs => {
+        const reg = regs.find(register => register.name === regName)
+        reg.values[index] = newValue
+        return regs
+      })
+    }, regName, index, newValue)
   }
   const duplicate = (regName, index, fromRegName, fromIndex) => {
-    const id = `${regName}_${$registers.find(register => register.name === regName).size}_${index}`
-    const fromId = `${fromRegName}_${$registers.find(register => register.name === fromRegName).size}_${fromIndex}`
-    const diff = utilities.calcCoordinatesDiffById(id, fromId)
-    anime({
-      targets: `#${fromId}`,
-      translateX: -diff.diffX,
-      translateY: -diff.diffY,
-      rotate: '0turn',
-      duration: 800,
-      complete: () => {
-        registers.update(regs => {
-          const reg = regs.find(register => register.name === regName)
-          const fromReg = regs.find(register => register.name === fromRegName)
-          reg.values[index] = fromReg.values[fromIndex]
-          return regs
-        })
-        anime({
-          targets: `#${fromId}`,
-          translateX: 0,
-          translateY: 0,
-          rotate: '0turn',
-          duration: 300,
-        })
-      },
-    })
+    basic.duplicate($registers, () => {
+      registers.update(regs => {
+        const reg = regs.find(register => register.name === regName)
+        const fromReg = regs.find(register => register.name === fromRegName)
+        reg.values[index] = fromReg.values[fromIndex]
+        return regs
+      })
+    }, regName, index, fromRegName, fromIndex)
   }
   const test = () => {
     exchange('YMM0', 4, 'YMM1', 0)
