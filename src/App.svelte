@@ -74,6 +74,33 @@
       },
     })
   }
+  const duplicate = (regName, index, fromRegName, fromIndex) => {
+    const id = `${regName}_${$registers.find(register => register.name === regName).size}_${index}`
+    const fromId = `${fromRegName}_${$registers.find(register => register.name === fromRegName).size}_${fromIndex}`
+    const diff = utilities.calcCoordinatesDiffById(id, fromId)
+    anime({
+      targets: `#${fromId}`,
+      translateX: -diff.diffX,
+      translateY: -diff.diffY,
+      rotate: '0turn',
+      duration: 800,
+      complete: () => {
+        registers.update(regs => {
+          const reg = regs.find(register => register.name === regName)
+          const fromReg = regs.find(register => register.name === fromRegName)
+          reg.values[index] = fromReg.values[fromIndex]
+          return regs
+        })
+        anime({
+          targets: `#${fromId}`,
+          translateX: 0,
+          translateY: 0,
+          rotate: '0turn',
+          duration: 300,
+        })
+      },
+    })
+  }
   const test = () => {
     exchange('YMM0', 4, 'YMM1', 0)
     exchange('YMM0', 5, 'YMM1', 1)
@@ -92,13 +119,20 @@
     assignment('YMM0', 2, 99)
     assignment('YMM0', 3, 99)
   }
+  const test4 = () => {
+    duplicate('YMM0', 0, 'YMM1', 0)
+    duplicate('YMM0', 1, 'YMM1', 1)
+    duplicate('YMM0', 2, 'YMM1', 2)
+    duplicate('YMM0', 3, 'YMM1', 3)
+  }
 </script>
 
 <main>
   <div class="card">
-    <Button click={test} text="Test" />
+    <Button click={test} text="Test1" />
     <Button click={test2} text="Test2" />
     <Button click={test3} text="Test3" />
+    <Button click={test4} text="Test4" />
     <div>
       {#each $registers as register}
         <div class="register_container">
