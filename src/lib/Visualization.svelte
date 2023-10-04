@@ -67,7 +67,7 @@
   }
 </script>
 
-<main>
+<div>
     <div>
         <Button click={test} text="Test1" />
         <Button click={test2} text="Test2" />
@@ -86,7 +86,7 @@
             {/each}
         </div>
     </div>
-</main>
+</div>
 
 <style>
     .register_container {

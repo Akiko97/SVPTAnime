@@ -44,7 +44,7 @@ h1 {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
-  text-align: center;
+  /*text-align: center;*/
 }
 
 button {
@@ -77,4 +77,17 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.highlight-line {
+  background: lightblue;
+  width: 5px !important;
+  margin-left: 3px;
+}
+.highlight-inline {
+  color: red !important;
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+  font-style: oblique;
 }
