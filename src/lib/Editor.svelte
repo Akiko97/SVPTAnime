@@ -3,6 +3,7 @@
   import * as monaco from 'monaco-editor'
   import Button from './Button.svelte'
   let editor
+  export let code
   onMount(() => {
     monaco.languages.register({ id: 'assembly' })
     monaco.languages.setMonarchTokensProvider('assembly', {
@@ -15,13 +16,13 @@
       },
     })
     editor = monaco.editor.create(document.getElementById('editor-container'), {
-      value: '; assembly code here\nmov rax, rbx\n',
+      value: code,
       language: 'assembly',
       theme: 'vs-dark',
     })
   })
   let decorations = []
-  const highlightLine = (lineNumber) => {
+  export const highlightLine = (lineNumber) => {
     decorations.push(editor.createDecorationsCollection([
       {
         range: new monaco.Range(lineNumber, 1, lineNumber, 1),
@@ -29,7 +30,7 @@
       },
     ]))
   }
-  const highlightInline = (lineNumber, from, to) => {
+  export const highlightInline = (lineNumber, from, to) => {
     decorations.push(editor.createDecorationsCollection([
       {
         range: new monaco.Range(lineNumber, from, lineNumber, to),
@@ -37,7 +38,7 @@
       },
     ]))
   }
-  const removeHighlight = () => {
+  export const removeHighlight = () => {
     decorations.forEach((decoration) => {
       decoration.clear()
     })
