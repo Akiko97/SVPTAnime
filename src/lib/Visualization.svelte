@@ -1,7 +1,6 @@
 <script>
   import { registers, register_config } from '../store.js'
   import { basic } from '../basic.js'
-  import Button from './Button.svelte'
   import Node from './Node.svelte'
   $: {
     $registers.forEach(register => {
@@ -41,56 +40,26 @@
       })
     }, regName, index, fromRegName, fromIndex)
   }
-  const test = () => {
-    exchange('YMM0', 4, 'YMM1', 0)
-    exchange('YMM0', 5, 'YMM1', 1)
-    exchange('YMM0', 6, 'YMM1', 2)
-    exchange('YMM0', 7, 'YMM1', 3)
-  }
-  const test2 = () => {
-    exchange('YMM0', 4, 'YMM0', 0)
-    exchange('YMM0', 5, 'YMM0', 1)
-    exchange('YMM0', 6, 'YMM0', 2)
-    exchange('YMM0', 7, 'YMM0', 3)
-  }
-  const test3 = () => {
-    assignment('YMM0', 0, 99)
-    assignment('YMM0', 1, 99)
-    assignment('YMM0', 2, 99)
-    assignment('YMM0', 3, 99)
-  }
-  const test4 = () => {
-    duplicate('YMM0', 0, 'YMM1', 0)
-    duplicate('YMM0', 1, 'YMM1', 1)
-    duplicate('YMM0', 2, 'YMM1', 2)
-    duplicate('YMM0', 3, 'YMM1', 3)
-  }
 </script>
 
 <div>
-    <div>
-        <Button click={test} text="Test1" />
-        <Button click={test2} text="Test2" />
-        <Button click={test3} text="Test3" />
-        <Button click={test4} text="Test4" />
-        <div>
-            {#each $registers as register}
-                <div class="register_container">
-                    <p>{register.name}:</p>
-                    <div id={`${register.name}`} class="register_container">
-                        {#each Array.from({length: register.size}, (_, i) => i) as index}
-                            <Node id={`${register.name}_${register.size}_${index}`} text={`${register.values[index]}`} stroke={`${register.stroke}`} fill={`${register.fill}`} />
-                        {/each}
-                    </div>
-                </div>
-            {/each}
+  <div>
+    {#each $registers as register}
+      <div class="register_container">
+        <p>{register.name}:</p>
+        <div id={`${register.name}`} class="register_container">
+          {#each Array.from({length: register.size}, (_, i) => i) as index}
+            <Node id={`${register.name}_${register.size}_${index}`} text={`${register.values[register.size - index - 1]}`} stroke={`${register.stroke}`} fill={`${register.fill}`} />
+          {/each}
         </div>
-    </div>
+      </div>
+    {/each}
+  </div>
 </div>
 
 <style>
-    .register_container {
-        display: flex;
-        flex-wrap: wrap;
-    }
+  .register_container {
+    display: flex;
+    flex-wrap: wrap;
+  }
 </style>

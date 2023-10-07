@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte'
   import * as monaco from 'monaco-editor'
-  import Button from './Button.svelte'
   let editor
   export let code
   onMount(() => {
@@ -44,28 +43,14 @@
     })
     decorations = []
   }
-  const test = () => {
-    highlightLine(1)
-    highlightInline(1, 1, 11)
-  }
-  const test2 = () => {
-    highlightLine(2)
-    highlightInline(2, 1, 4)
-  }
-  const test3 = () => {
-    removeHighlight()
-  }
 </script>
 
 <div>
-  <Button click={test} text="Test" />
-  <Button click={test2} text="Test2" />
-  <Button click={test3} text="Test3" />
   <div id="editor-container"></div>
 </div>
 
 <style>
   #editor-container {
-    height:500px;
+    height: 100%;
   }
 </style>

@@ -1,17 +1,22 @@
 <script>
+  import { onMount } from 'svelte'
   import { registers } from '../store.js'
   import Visualization from './Visualization.svelte'
   import Editor from './Editor.svelte'
   import Button from './Button.svelte'
+  import { Instructions } from '../instructions.js'
   let visualizationRef
   let editorRef
-  const code = `movaps ymm2, ymm0
-movaps ymm3, ymm1
-vshufps ymm4, ymm2, ymm3, 0x4E
-vperm2f128 ymm5, ymm2, ymm3, 0x20
-vpermq ymm5, ymm5, 0x4E
-vxorps ymm0, ymm0, ymm0
-  `
+  let i
+  onMount(() => {
+    i = new Instructions(visualizationRef.duplicate, visualizationRef.exchange, visualizationRef.assignment)
+  })
+  const code = 'movaps ymm2, ymm0\n' +
+               'movaps ymm3, ymm1\n' +
+               'vshufps ymm4, ymm2, ymm3, 0x4E\n' +
+               'vperm2f128 ymm5, ymm2, ymm3, 0x20\n' +
+               'vpermq ymm5, ymm5, 0x4E\n' +
+               'vxorps ymm0, ymm0, ymm0\n'
   let step = 1
   registers.update(() => [
     { name: 'YMM0', size: 8, values: [8, 1, 3, 5, 7, 9, 2, 4] },
@@ -26,24 +31,10 @@ vxorps ymm0, ymm0, ymm0
     editorRef.highlightLine(step)
     switch (step) {
       case 1:
-        visualizationRef.duplicate('YMM2', 0, 'YMM0', 0)
-        visualizationRef.duplicate('YMM2', 1, 'YMM0', 1)
-        visualizationRef.duplicate('YMM2', 2, 'YMM0', 2)
-        visualizationRef.duplicate('YMM2', 3, 'YMM0', 3)
-        visualizationRef.duplicate('YMM2', 4, 'YMM0', 4)
-        visualizationRef.duplicate('YMM2', 5, 'YMM0', 5)
-        visualizationRef.duplicate('YMM2', 6, 'YMM0', 6)
-        visualizationRef.duplicate('YMM2', 7, 'YMM0', 7)
+        i.movaps('ymm2', 'ymm0')
         break
       case 2:
-        visualizationRef.duplicate('YMM3', 0, 'YMM1', 0)
-        visualizationRef.duplicate('YMM3', 1, 'YMM1', 1)
-        visualizationRef.duplicate('YMM3', 2, 'YMM1', 2)
-        visualizationRef.duplicate('YMM3', 3, 'YMM1', 3)
-        visualizationRef.duplicate('YMM3', 4, 'YMM1', 4)
-        visualizationRef.duplicate('YMM3', 5, 'YMM1', 5)
-        visualizationRef.duplicate('YMM3', 6, 'YMM1', 6)
-        visualizationRef.duplicate('YMM3', 7, 'YMM1', 7)
+        i.movaps('ymm3', 'ymm1')
         break
       case 3:
         visualizationRef.duplicate('YMM4', 0, 'YMM2', 5)
@@ -86,15 +77,31 @@ vxorps ymm0, ymm0, ymm0
   }
 </script>
 
-<div>
+<div class="main-container">
   <div id="editor-container">
     <Editor bind:this={editorRef} {code} />
   </div>
   <div id="visualization-container">
     <Visualization bind:this={visualizationRef} />
   </div>
-    <Button click={test} text="Test" />
+  <Button click={test} text="Test" />
 </div>
 
 <style>
+  .main-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+  }
+  #editor-container {
+    width: 50%;
+    height: 100%;
+  }
+  #visualization-container {
+    width: 50%;
+    height: 100%;
+  }
 </style>
