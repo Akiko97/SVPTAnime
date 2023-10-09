@@ -49,7 +49,7 @@
         <p>{register.name}:</p>
         <div id={`${register.name}`} class="register_container">
           {#each Array.from({length: register.size}, (_, i) => i) as index}
-            <Node id={`${register.name}_${register.size}_${index}`} text={`${register.values[register.size - index - 1]}`} stroke={`${register.stroke}`} fill={`${register.fill}`} />
+            <Node id={`${register.name}_${register.size}_${register.size - 1 - index}`} text={`${register.values[register.size - index - 1]}`} stroke={`${register.stroke}`} fill={`${register.fill}`} />
           {/each}
         </div>
       </div>

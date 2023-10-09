@@ -9,7 +9,11 @@
   let editorRef
   let i
   onMount(() => {
-    i = new Instructions(visualizationRef.duplicate, visualizationRef.exchange, visualizationRef.assignment)
+    i = new Instructions(
+      visualizationRef.duplicate,
+      visualizationRef.exchange,
+      visualizationRef.assignment
+    )
   })
   const code = 'movaps ymm2, ymm0\n' +
                'movaps ymm3, ymm1\n' +
@@ -37,40 +41,20 @@
         i.movaps('ymm3', 'ymm1')
         break
       case 3:
-        visualizationRef.duplicate('YMM4', 0, 'YMM2', 5)
-        visualizationRef.duplicate('YMM4', 1, 'YMM2', 4)
-        visualizationRef.duplicate('YMM4', 2, 'YMM3', 7)
-        visualizationRef.duplicate('YMM4', 3, 'YMM3', 6)
-        visualizationRef.duplicate('YMM4', 4, 'YMM2', 1)
-        visualizationRef.duplicate('YMM4', 5, 'YMM2', 0)
-        visualizationRef.duplicate('YMM4', 6, 'YMM3', 3)
-        visualizationRef.duplicate('YMM4', 7, 'YMM3', 2)
+        i.vshufps('ymm4', 'ymm2', 'ymm3', 0x4E)
         break
       case 4:
-        visualizationRef.duplicate('YMM5', 0, 'YMM2', 4)
-        visualizationRef.duplicate('YMM5', 1, 'YMM2', 5)
-        visualizationRef.duplicate('YMM5', 2, 'YMM2', 6)
-        visualizationRef.duplicate('YMM5', 3, 'YMM2', 7)
-        visualizationRef.duplicate('YMM5', 4, 'YMM3', 4)
-        visualizationRef.duplicate('YMM5', 5, 'YMM3', 5)
-        visualizationRef.duplicate('YMM5', 6, 'YMM3', 6)
-        visualizationRef.duplicate('YMM5', 7, 'YMM3', 7)
+        i.vperm2f128('ymm5', 'ymm2', 'ymm3', 0x20)
         break
       case 5:
-        visualizationRef.exchange('YMM5', 0, 'YMM5', 4)
-        visualizationRef.exchange('YMM5', 1, 'YMM5', 5)
-        visualizationRef.exchange('YMM5', 2, 'YMM5', 6)
-        visualizationRef.exchange('YMM5', 3, 'YMM5', 7)
+        i.vpermq('ymm5', 'ymm5', 0x4E)
+        // visualizationRef.exchange('YMM5', 0, 'YMM5', 4)
+        // visualizationRef.exchange('YMM5', 1, 'YMM5', 5)
+        // visualizationRef.exchange('YMM5', 2, 'YMM5', 6)
+        // visualizationRef.exchange('YMM5', 3, 'YMM5', 7)
         break
       case 6:
-        visualizationRef.assignment('YMM0', 0, 0)
-        visualizationRef.assignment('YMM0', 1, 0)
-        visualizationRef.assignment('YMM0', 2, 0)
-        visualizationRef.assignment('YMM0', 3, 0)
-        visualizationRef.assignment('YMM0', 4, 0)
-        visualizationRef.assignment('YMM0', 5, 0)
-        visualizationRef.assignment('YMM0', 6, 0)
-        visualizationRef.assignment('YMM0', 7, 0)
+        i.vxorps('ymm0', 'ymm0', 'ymm0')
         break
     }
     step++
