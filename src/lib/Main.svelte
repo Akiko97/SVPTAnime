@@ -20,8 +20,7 @@
                'vshufps ymm4, ymm2, ymm3, 0x4E\n' +
                'vperm2f128 ymm5, ymm2, ymm3, 0x20\n' +
                'vpermq ymm5, ymm5, 0x4E\n' +
-               'vxorps ymm0, ymm0, ymm0\n'
-  let step = 1
+               'vxorps ymm0, ymm0, ymm0'
   registers.update(() => [
     { name: 'YMM0', size: 8, values: [8, 1, 3, 5, 7, 9, 2, 4] },
     { name: 'YMM1', size: 8, values: [1, 3, 5, 7, 9, 2, 4, 6] },
@@ -30,34 +29,36 @@
     { name: 'YMM4', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
     { name: 'YMM5', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
   ])
+  const executeInstruction = (instructionStr) => {
+    const tokens = instructionStr.split(/[\s,]+/)
+    const instructionName = tokens[0]
+    const args = tokens.slice(1)
+    if (typeof i[instructionName] === 'function') {
+      i[instructionName].apply(i, args)
+    } else {
+      console.error(`Unknown instruction: ${instructionName}`)
+    }
+  }
+  let step = 1
   const test = () => {
     editorRef.removeHighlight()
-    editorRef.highlightLine(step)
-    switch (step) {
-      case 1:
-        i.movaps('ymm2', 'ymm0')
-        break
-      case 2:
-        i.movaps('ymm3', 'ymm1')
-        break
-      case 3:
-        i.vshufps('ymm4', 'ymm2', 'ymm3', 0x4E)
-        break
-      case 4:
-        i.vperm2f128('ymm5', 'ymm2', 'ymm3', 0x20)
-        break
-      case 5:
-        i.vpermq('ymm5', 'ymm5', 0x4E)
-        // visualizationRef.exchange('YMM5', 0, 'YMM5', 4)
-        // visualizationRef.exchange('YMM5', 1, 'YMM5', 5)
-        // visualizationRef.exchange('YMM5', 2, 'YMM5', 6)
-        // visualizationRef.exchange('YMM5', 3, 'YMM5', 7)
-        break
-      case 6:
-        i.vxorps('ymm0', 'ymm0', 'ymm0')
-        break
+    if (step > code.split('\n').length) {
+      step = 1
+      registers.update(() => [
+        { name: 'YMM0', size: 8, values: [8, 1, 3, 5, 7, 9, 2, 4] },
+        { name: 'YMM1', size: 8, values: [1, 3, 5, 7, 9, 2, 4, 6] },
+        { name: 'YMM2', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
+        { name: 'YMM3', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
+        { name: 'YMM4', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
+        { name: 'YMM5', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
+      ])
     }
-    step++
+    else {
+      editorRef.highlightLine(step)
+      const instructionStr = code.split('\n')[step - 1]
+      executeInstruction(instructionStr)
+      step++
+    }
   }
 </script>
 

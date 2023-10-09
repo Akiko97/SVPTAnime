@@ -7,6 +7,18 @@ const exchange = (registers, update, regName1, index1, regName2, index2) => {
   const diff = utilities.calcCoordinatesDiffById(id1, id2)
   anime({
     targets: `#${id1}`,
+    zIndex: [
+      { value: 9999, duration: 0 }
+    ],
+  })
+  anime({
+    targets: `#${id2}`,
+    zIndex: [
+      { value: 9999, duration: 0 }
+    ],
+  })
+  anime({
+    targets: `#${id1}`,
     translateX: diff.diffX,
     translateY: diff.diffY,
     rotate: '0turn',
@@ -32,10 +44,28 @@ const exchange = (registers, update, regName1, index1, regName2, index2) => {
         translateY: 0,
         duration: 0,
       })
+      anime({
+        targets: `#${id1}`,
+        zIndex: [
+          { value: 0, duration: 0 }
+        ],
+      })
+      anime({
+        targets: `#${id2}`,
+        zIndex: [
+          { value: 0, duration: 0 }
+        ],
+      })
     },
   })
 }
 const assignment = (registers, update, regName, index, newValue) => {
+  anime({
+    targets: `#${regName}_${registers.find(register => register.name === regName).size}_${index}`,
+    zIndex: [
+      { value: 9999, duration: 0 }
+    ],
+  })
   anime({
     targets: `#${regName}_${registers.find(register => register.name === regName).size}_${index}`,
     translateY: [
@@ -50,6 +80,12 @@ const assignment = (registers, update, regName, index, newValue) => {
     duration: 0,
     complete: () => {
       update()
+      anime({
+        targets: `#${regName}_${registers.find(register => register.name === regName).size}_${index}`,
+        zIndex: [
+          { value: 0, duration: 0 }
+        ],
+      })
     },
   })
 }
@@ -57,6 +93,12 @@ const duplicate = (registers, update, regName, index, fromRegName, fromIndex) =>
   const id = `${regName}_${registers.find(register => register.name === regName).size}_${index}`
   const fromId = `${fromRegName}_${registers.find(register => register.name === fromRegName).size}_${fromIndex}`
   const diff = utilities.calcCoordinatesDiffById(id, fromId)
+  anime({
+    targets: `#${fromId}`,
+    zIndex: [
+      { value: 9999, duration: 0 }
+    ],
+  })
   anime({
     targets: `#${fromId}`,
     translateX: -diff.diffX,
@@ -71,6 +113,12 @@ const duplicate = (registers, update, regName, index, fromRegName, fromIndex) =>
         translateY: 0,
         rotate: '0turn',
         duration: 300,
+      })
+      anime({
+        targets: `#${fromId}`,
+        zIndex: [
+          { value: 0, duration: 0 }
+        ],
       })
     },
   })
