@@ -15,7 +15,8 @@
       visualizationRef.assignment
     )
   })
-  const code = 'movaps ymm2, ymm0\n' +
+  const code = 'vperm2f128 ymm0, ymm0, ymm0, 0x01\n' +
+               'movaps ymm2, ymm0\n' +
                'movaps ymm3, ymm1\n' +
                'vshufps ymm4, ymm2, ymm3, 0x4E\n' +
                'vperm2f128 ymm5, ymm2, ymm3, 0x20\n' +
