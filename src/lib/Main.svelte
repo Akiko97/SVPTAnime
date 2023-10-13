@@ -3,6 +3,7 @@
   import { registers } from '../store.js'
   import Visualization from './Visualization.svelte'
   import Editor from './Editor.svelte'
+  import Blockly from './Blockly.svelte'
   import Button from './Button.svelte'
   import { Instructions } from '../instructions.js'
   let visualizationRef
@@ -64,8 +65,13 @@
 </script>
 
 <div class="main-container">
-  <div id="editor-container">
-    <Editor bind:this={editorRef} {code} />
+  <div id="gcode-container">
+    <div id="blockly-container">
+      <Blockly />
+    </div>
+    <div id="editor-container">
+      <Editor bind:this={editorRef} {code} />
+    </div>
   </div>
   <div id="visualization-container">
     <Visualization bind:this={visualizationRef} />
@@ -82,9 +88,17 @@
     height: 100%;
     width: 100%;
   }
-  #editor-container {
+  #gcode-container {
     width: 50%;
     height: 100%;
+  }
+  #blockly-container {
+    width: 100%;
+    height: 50%;
+  }
+  #editor-container {
+    width: 100%;
+    height: 50%;
   }
   #visualization-container {
     width: 50%;
