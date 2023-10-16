@@ -22,7 +22,8 @@
                'vshufps ymm4, ymm2, ymm3, 0x4E\n' +
                'vperm2f128 ymm5, ymm2, ymm3, 0x20\n' +
                'vpermq ymm5, ymm5, 0x4E\n' +
-               'vxorps ymm0, ymm0, ymm0'
+               'vxorps ymm0, ymm0, ymm0\n' +
+               'vxorps ymm0, ymm1, ymm2'
   registers.update(() => [
     { name: 'YMM0', size: 8, values: [8, 1, 3, 5, 7, 9, 2, 4] },
     { name: 'YMM1', size: 8, values: [1, 3, 5, 7, 9, 2, 4, 6] },

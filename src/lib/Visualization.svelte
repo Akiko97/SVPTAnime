@@ -21,14 +21,29 @@
       })
     }, regName1, index1, regName2, index2)
   }
-  export const assignment = (regName, index, newValue) => {
-    basic.assignment($registers, () => {
-      registers.update(regs => {
-        const reg = regs.find(register => register.name === regName)
-        reg.values[index] = newValue
-        return regs
+  export const assignment = (regName, index, newValue, fromRegs = []) => {
+    const _assignment = () => {
+      basic.assignment($registers, () => {
+        registers.update(regs => {
+          const reg = regs.find(register => register.name === regName)
+          reg.values[index] = newValue
+          return regs
+        })
+      }, regName, index, newValue)
+    }
+    const allRegsAreSame = fromRegs.every(reg => {
+      return reg.name === regName
+    })
+    if (allRegsAreSame) {
+      _assignment()
+    }
+    else {
+      fromRegs.forEach(fromReg => {
+        basic.duplicate($registers, () => {
+          _assignment()
+        }, regName, index, fromReg.name, fromReg.index)
       })
-    }, regName, index, newValue)
+    }
   }
   export const duplicate = (regName, index, fromRegName, fromIndex) => {
     basic.duplicate($registers, () => {

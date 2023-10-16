@@ -97,7 +97,10 @@ export class Instructions {
     reg2 = reg2.toUpperCase()
     reg3 = reg3.toUpperCase()
     for (let i = 0; i < this.get_size(reg1); i++) {
-      this.assignment(reg1, i, this.get_values(reg2)[i] ^ this.get_values(reg3)[i])
+      this.assignment(reg1, i, this.get_values(reg2)[i] ^ this.get_values(reg3)[i], [
+        { name: reg2, index: i },
+        { name: reg3, index: i },
+      ])
     }
   }
   vperm2f128(reg1, reg2, reg3, imm8) {
