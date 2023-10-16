@@ -1,11 +1,13 @@
 export const utilities = {
   getCoordinateById: (id) => {
     let element = document.getElementById(id)
-    let rect = element.getBoundingClientRect()
-    let docScrollLeft = document.documentElement.scrollLeft
-    let docScrollTop = document.documentElement.scrollTop
-    let absoluteTop = rect.top + docScrollTop
-    let absoluteLeft = rect.left + docScrollLeft
+    // let rect = element.getBoundingClientRect()
+    // let docScrollLeft = document.documentElement.scrollLeft
+    // let docScrollTop = document.documentElement.scrollTop
+    // let absoluteTop = rect.top + docScrollTop
+    // let absoluteLeft = rect.left + docScrollLeft
+    let absoluteTop = element.offsetTop
+    let absoluteLeft = element.offsetLeft
     return { absoluteTop, absoluteLeft }
   },
   calcCoordinatesDiffById: (id1, id2) => {
