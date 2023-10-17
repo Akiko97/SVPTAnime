@@ -59,9 +59,11 @@ export class Instructions {
   }
   movaps(reg1, reg2) {
     this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
     let size = this.get_size(reg1)
     for (let i = 0; i < size; i++) {
-      this.move(reg1.toUpperCase(), i, reg2.toUpperCase(), i)
+      this.move(reg1, i, reg2, i)
     }
   }
   vshufps(reg1, reg2, reg3, imm8) {
@@ -160,6 +162,141 @@ export class Instructions {
         select4(reg1, d, reg2, (imm8 >> 2) & 0b11)
         select4(reg1, 2 * d, reg2, (imm8 >> 4) & 0b11)
         select4(reg1, 3 * d, reg2, (imm8 >> 6) & 0b11)
+        break
+      case 'ZMM':
+        //
+        break
+    }
+  }
+  vmulpd(reg1, reg2, reg3) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    reg3 = reg3.toUpperCase()
+    for (let i = 0; i < this.get_size(reg1); i++) {
+      this.assignment(reg1, i, this.get_values(reg2)[i] * this.get_values(reg3)[i], [
+        { name: reg2, index: i },
+        { name: reg3, index: i },
+      ])
+    }
+  }
+  vfmadd213pd(reg1, reg2, reg3) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    reg3 = reg3.toUpperCase()
+    for (let i = 0; i < this.get_size(reg1); i++) {
+      this.assignment(reg1, i, this.get_values(reg1)[i] * this.get_values(reg2)[i] + this.get_values(reg3)[i], [
+        { name: reg1, index: i },
+        { name: reg2, index: i },
+        { name: reg3, index: i },
+      ])
+    }
+  }
+  vfmadd132pd(reg1, reg2, reg3) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    reg3 = reg3.toUpperCase()
+    for (let i = 0; i < this.get_size(reg1); i++) {
+      this.assignment(reg1, i, this.get_values(reg1)[i] * this.get_values(reg3)[i] + this.get_values(reg2)[i], [
+        { name: reg1, index: i },
+        { name: reg2, index: i },
+        { name: reg3, index: i },
+      ])
+    }
+  }
+  vfmadd231pd(reg1, reg2, reg3) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    reg3 = reg3.toUpperCase()
+    for (let i = 0; i < this.get_size(reg1); i++) {
+      this.assignment(reg1, i, this.get_values(reg2)[i] * this.get_values(reg3)[i] + this.get_values(reg1)[i], [
+        { name: reg1, index: i },
+        { name: reg2, index: i },
+        { name: reg3, index: i },
+      ])
+    }
+  }
+  vmovapd(reg1, reg2) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    let size = this.get_size(reg1)
+    for (let i = 0; i < size; i++) {
+      this.move(reg1, i, reg2, i)
+    }
+  }
+  vextractf128(reg1, reg2, imm8) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    switch (this.get_type(reg2)) {
+      case 'YMM':
+        switch (this.get_size(reg2)) {
+          case 4:
+            switch (imm8 & 0b1) {
+              case 0:
+                this.move(reg1, 0, reg2, 0)
+                this.move(reg1, 1, reg2, 1)
+                break
+              case 1:
+                this.move(reg1, 0, reg2, 2)
+                this.move(reg1, 1, reg2, 3)
+                break
+            }
+            break
+          case 8:
+            switch (imm8 & 0b1) {
+              case 0:
+                this.move(reg1, 0, reg2, 0)
+                this.move(reg1, 1, reg2, 1)
+                this.move(reg1, 2, reg2, 2)
+                this.move(reg1, 3, reg2, 3)
+                break
+              case 1:
+                this.move(reg1, 0, reg2, 4)
+                this.move(reg1, 1, reg2, 5)
+                this.move(reg1, 2, reg2, 6)
+                this.move(reg1, 3, reg2, 7)
+                break
+            }
+            break
+        }
+        break
+      case "ZMM":
+        //
+        break
+    }
+  }
+  shufpd(reg1, reg2, imm8) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    if ((imm8 & 0b1) === 0) {
+      this.move(reg1, 0, reg1, 0)
+    }
+    else {
+      this.move(reg1, 0, reg1, 1)
+    }
+    if ((imm8 & 0b10) === 0) {
+      this.move(reg1, 1, reg2, 0)
+    }
+    else {
+      this.move(reg1, 1, reg2, 1)
+    }
+  }
+  vbroadcastsd(reg1, reg2) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    switch (this.get_type(reg1)) {
+      case 'YMM':
+        this.move(reg1, 0, reg2, 0)
+        this.move(reg1, 1, reg2, 0)
+        this.move(reg1, 2, reg2, 0)
+        this.move(reg1, 3, reg2, 0)
         break
       case 'ZMM':
         //
