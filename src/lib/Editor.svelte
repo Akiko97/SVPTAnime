@@ -1,8 +1,8 @@
 <script>
   import { onMount } from 'svelte'
   import * as monaco from 'monaco-editor'
+  import { code } from '../store.js'
   let editor
-  export let code
   onMount(() => {
     monaco.languages.register({ id: 'assembly' })
     monaco.languages.setMonarchTokensProvider('assembly', {
@@ -15,10 +15,15 @@
       },
     })
     editor = monaco.editor.create(document.getElementById('monaco-container'), {
-      value: code,
+      value: $code,
       language: 'assembly',
       theme: 'vs-dark',
       automaticLayout: true
+    })
+    editor.onDidChangeModelContent(() => {
+      code.update(() => {
+        return editor.getValue()
+      })
     })
   })
   let decorations = []

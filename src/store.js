@@ -1,5 +1,7 @@
 import { writable } from 'svelte/store'
 
+export const code = writable('vperm2f128 ymm0, ymm0, ymm0, 0x01')
+
 export const registers = writable([
   { name: 'YMM0', size: 8, values: [0, 1, 2, 3, 4, 5, 6, 7] },
   { name: 'YMM1', size: 8, values: [7, 6, 5, 4, 3, 2, 1, 0] },
