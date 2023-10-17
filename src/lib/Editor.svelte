@@ -14,10 +14,11 @@
         ],
       },
     })
-    editor = monaco.editor.create(document.getElementById('editor-container'), {
+    editor = monaco.editor.create(document.getElementById('monaco-container'), {
       value: code,
       language: 'assembly',
       theme: 'vs-dark',
+      automaticLayout: true
     })
   })
   let decorations = []
@@ -45,12 +46,12 @@
   }
 </script>
 
-<div>
-  <div id="editor-container"></div>
+<div style="height: 100%;">
+  <div id="monaco-container"></div>
 </div>
 
 <style>
-  #editor-container {
+  #monaco-container {
     height: 100%;
   }
 </style>
