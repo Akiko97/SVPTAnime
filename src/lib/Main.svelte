@@ -1,11 +1,12 @@
 <script>
-  import { onMount } from 'svelte'
-  import { registers, code } from '../store.js'
+  import {onMount} from 'svelte'
+  import {code, history, registers} from '../store.js'
   import Visualization from './Visualization.svelte'
   import Editor from './Editor.svelte'
   import Blockly from './Blockly.svelte'
   import Button from './Button.svelte'
-  import { Instructions } from '../instructions.js'
+  import {Instructions} from '../instructions.js'
+
   let visualizationRef
   let editorRef
   let i
@@ -117,10 +118,11 @@
     }
   }
   let step = 1
-  const test = () => {
+  const run = () => {
     editorRef.removeHighlight()
     if (step > $code.split('\n').length) {
       step = 1
+      editorRef.highlightLine(step)
       registers.update(() => [
         // { name: 'YMM0', size: 8, values: [8, 1, 3, 5, 7, 9, 2, 4] },
         // { name: 'YMM1', size: 8, values: [1, 3, 5, 7, 9, 2, 4, 6] },
@@ -142,13 +144,49 @@
         { name: 'YMM10', size: 4, values: [0, 0, 0, 0] },
         { name: 'YMM11', size: 4, values: [0, 0, 0, 0] },
       ])
+      clear_history()
     }
     else {
-      editorRef.highlightLine(step)
       const instructionStr = $code.split('\n')[step - 1]
+      save($registers)
       executeInstruction(instructionStr)
       step++
+      editorRef.highlightLine(step)
     }
+  }
+  const undo = () => {
+    editorRef.removeHighlight()
+    if (step > 1) {
+      step--
+    }
+    else {
+      return
+    }
+    editorRef.highlightLine(step)
+    registers.update(() => {
+      return pop()
+    })
+  }
+  const save = (regs) => {
+    history.update(() => {
+      const h = $history
+      h.push(JSON.parse(JSON.stringify($registers)))
+      return h
+    })
+  }
+  const clear_history = () => {
+    history.update(() => {
+      return []
+    })
+  }
+  const pop = () => {
+    let ret
+    history.update(() => {
+      const h = $history
+      ret = h.pop()
+      return h
+    })
+    return ret
   }
 </script>
 
@@ -164,7 +202,8 @@
   <div id="visualization-container">
     <Visualization bind:this={visualizationRef} />
   </div>
-  <Button click={test} text="Test" />
+  <Button click={run} text="Run" />
+  <Button click={undo} text="Undo" />
 </div>
 
 <style>

@@ -7,6 +7,8 @@ export const registers = writable([
   { name: 'YMM1', size: 8, values: [7, 6, 5, 4, 3, 2, 1, 0] },
 ])
 
+export const history = writable([])
+
 export const register_config = [
   // XMM
   { name: 'XMM0', stroke: 'green', fill: 'purple' },

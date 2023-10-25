@@ -6,19 +6,19 @@ export class Instructions {
     this.assignment = assignment
     this.moveRecord = []
   }
-  move(regName, index, fromRegName, fromIndex) {
+  move(regName, index, fromRegName, fromIndex, callback = null) {
     if (regName === fromRegName) {
       const i = this.moveRecord.indexOf(`exchange_${fromRegName}_${fromIndex}_${regName}_${index}`)
       if (i !== -1) {
         this.moveRecord.splice(i, 1)
       }
       else {
-        this.exchange(regName, index, fromRegName, fromIndex)
+        this.exchange(regName, index, fromRegName, fromIndex, callback)
         this.moveRecord.push(`exchange_${regName}_${index}_${fromRegName}_${fromIndex}`)
       }
     }
     else {
-      this.duplicate(regName, index, fromRegName, fromIndex)
+      this.duplicate(regName, index, fromRegName, fromIndex, callback)
     }
   }
   clear_record() {
@@ -293,10 +293,13 @@ export class Instructions {
     reg2 = reg2.toUpperCase()
     switch (this.get_type(reg1)) {
       case 'YMM':
-        this.move(reg1, 0, reg2, 0)
-        this.move(reg1, 1, reg2, 0)
-        this.move(reg1, 2, reg2, 0)
-        this.move(reg1, 3, reg2, 0)
+        this.move(reg1, 0, reg2, 0, () => {
+          this.move(reg1, 1, reg2, 0, () => {
+            this.move(reg1, 2, reg2, 0, () => {
+              this.move(reg1, 3, reg2, 0)
+            })
+          })
+        })
         break
       case 'ZMM':
         //

@@ -9,7 +9,7 @@
       register.fill = config.fill
     });
   }
-  export const exchange = (regName1, index1, regName2, index2) => {
+  export const exchange = (regName1, index1, regName2, index2, callback = null) => {
     basic.exchange($registers, () => {
       registers.update(regs => {
         const reg1 = regs.find(register => register.name === regName1)
@@ -20,8 +20,11 @@
         return regs
       })
     }, regName1, index1, regName2, index2)
+    if (callback) {
+      setTimeout(callback, 1000)
+    }
   }
-  export const assignment = (regName, index, newValue, fromRegs = []) => {
+  export const assignment = (regName, index, newValue, fromRegs = [], callback = null) => {
     const _assignment = () => {
       basic.assignment($registers, () => {
         registers.update(regs => {
@@ -44,8 +47,11 @@
         }, regName, index, fromReg.name, fromReg.index)
       })
     }
+    if (callback) {
+      setTimeout(callback, 1000)
+    }
   }
-  export const duplicate = (regName, index, fromRegName, fromIndex) => {
+  export const duplicate = (regName, index, fromRegName, fromIndex, callback = null) => {
     basic.duplicate($registers, () => {
       registers.update(regs => {
         const reg = regs.find(register => register.name === regName)
@@ -54,6 +60,9 @@
         return regs
       })
     }, regName, index, fromRegName, fromIndex)
+    if (callback) {
+      setTimeout(callback, 1000)
+    }
   }
 </script>
 
