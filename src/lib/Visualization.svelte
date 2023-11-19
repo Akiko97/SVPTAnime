@@ -1,6 +1,7 @@
 <script>
   import { registers, register_config } from '../store.js'
   import { basic } from '../basic.js'
+  import { speed_all } from '../speed.js'
   import Node from './Node.svelte'
   $: {
     $registers.forEach(register => {
@@ -21,7 +22,7 @@
       })
     }, regName1, index1, regName2, index2)
     if (callback) {
-      setTimeout(callback, 1000)
+      setTimeout(callback, speed_all)
     }
   }
   export const assignment = (regName, index, newValue, fromRegs = [], callback = null) => {
@@ -48,7 +49,7 @@
       })
     }
     if (callback) {
-      setTimeout(callback, 1000)
+      setTimeout(callback, speed_all)
     }
   }
   export const duplicate = (regName, index, fromRegName, fromIndex, callback = null) => {
@@ -61,7 +62,7 @@
       })
     }, regName, index, fromRegName, fromIndex)
     if (callback) {
-      setTimeout(callback, 1000)
+      setTimeout(callback, speed_all)
     }
   }
 </script>
@@ -70,7 +71,7 @@
   <div>
     {#each $registers as register}
       <div class="register_container">
-        <p>{register.name}:</p>
+        <p style="margin-right: 10px; width: 60px; height: 30px; margin-top: 0; margin-bottom: 0;">{register.name}:</p>
         <div id={`${register.name}`} class="register_container">
           {#each Array.from({length: register.size}, (_, i) => i) as index}
             <Node id={`${register.name}_${register.size}_${register.size - 1 - index}`} text={`${register.values[register.size - index - 1]}`} stroke={`${register.stroke}`} fill={`${register.fill}`} />
@@ -85,5 +86,6 @@
   .register_container {
     display: flex;
     flex-wrap: wrap;
+    align-content: center;
   }
 </style>

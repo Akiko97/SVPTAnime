@@ -26,6 +26,7 @@
     //   'vpermq ymm5, ymm5, 0x4E\n' +
     //   'vxorps ymm0, ymm0, ymm0\n' +
     //   'vxorps ymm0, ymm1, ymm2'
+    // Matrix Multiplication
     return 'vextractf128 xmm0, ymm0, 1\n' +
       'vbroadcastsd ymm5, xmm0\n' +
       'shufpd xmm0, xmm0, 1\n' +
@@ -200,10 +201,14 @@
     </div>
   </div>
   <div id="visualization-container">
-    <Visualization bind:this={visualizationRef} />
+    <div style="height: 90%;">
+      <Visualization bind:this={visualizationRef} />
+    </div>
+    <div style="height: 10%;">
+      <Button click={run} text="Run" />
+      <Button click={undo} text="Undo" />
+    </div>
   </div>
-  <Button click={run} text="Run" />
-  <Button click={undo} text="Undo" />
 </div>
 
 <style>

@@ -1,5 +1,6 @@
 import anime from 'animejs'
 import { utilities } from './utilities.js'
+import { speed, speed_half } from './speed.js'
 
 const exchange = (registers, update, regName1, index1, regName2, index2) => {
   const id1 = `${regName1}_${registers.find(register => register.name === regName1).size}_${index1}`
@@ -22,14 +23,16 @@ const exchange = (registers, update, regName1, index1, regName2, index2) => {
     translateX: diff.diffX,
     translateY: diff.diffY,
     rotate: '0turn',
-    duration: 800,
+    // Speed
+    duration: speed,
   })
   anime({
     targets: `#${id2}`,
     translateX: -diff.diffX,
     translateY: -diff.diffY,
     rotate: '0turn',
-    duration: 800,
+    // Speed
+    duration: speed,
     complete: () => {
       update()
       anime({
@@ -104,7 +107,8 @@ const duplicate = (registers, update, regName, index, fromRegName, fromIndex) =>
     translateX: -diff.diffX,
     translateY: -diff.diffY,
     rotate: '0turn',
-    duration: 800,
+    // Speed
+    duration: speed,
     complete: () => {
       update()
       anime({
@@ -112,7 +116,8 @@ const duplicate = (registers, update, regName, index, fromRegName, fromIndex) =>
         translateX: 0,
         translateY: 0,
         rotate: '0turn',
-        duration: 300,
+        // Speed
+        duration: speed_half,
       })
       anime({
         targets: `#${fromId}`,
