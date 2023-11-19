@@ -18,6 +18,7 @@
     )
   })
   code.update(() => {
+    // TEST
     // return 'vperm2f128 ymm0, ymm0, ymm0, 0x01\n' +
     //   'movaps ymm2, ymm0\n' +
     //   'movaps ymm3, ymm1\n' +
@@ -27,82 +28,106 @@
     //   'vxorps ymm0, ymm0, ymm0\n' +
     //   'vxorps ymm0, ymm1, ymm2'
     // Matrix Multiplication
-    return 'vextractf128 xmm0, ymm0, 1\n' +
-      'vbroadcastsd ymm5, xmm0\n' +
-      'shufpd xmm0, xmm0, 1\n' +
-      'vbroadcastsd ymm4, xmm0\n' +
-      'vextractf128 xmm0, ymm0, 0\n' +
-      'vbroadcastsd ymm7, xmm0\n' +
-      'shufpd xmm0, xmm0, 1\n' +
-      'vbroadcastsd ymm6, xmm0\n' +
-      'vmulpd ymm7, ymm3, ymm7\n' +
-      'vfmadd213pd ymm6, ymm2, ymm7\n' +
-      'vfmadd213pd ymm5, ymm1, ymm6\n' +
-      'vfmadd213pd ymm4, ymm0, ymm5\n' +
-      'vmovapd ymm8, ymm4\n' +
-      '\n' +
-      'vextractf128 xmm0, ymm1, 1\n' +
-      'vbroadcastsd ymm5, xmm0\n' +
-      'shufpd xmm0, xmm0, 1\n' +
-      'vbroadcastsd ymm4, xmm0\n' +
-      'vextractf128 xmm0, ymm1, 0\n' +
-      'vbroadcastsd ymm7, xmm0\n' +
-      'shufpd xmm0, xmm0, 1\n' +
-      'vbroadcastsd ymm6, xmm0\n' +
-      'vmulpd ymm7, ymm3, ymm7\n' +
-      'vfmadd213pd ymm6, ymm2, ymm7\n' +
-      'vfmadd213pd ymm5, ymm1, ymm6\n' +
-      'vfmadd213pd ymm4, ymm0, ymm5\n' +
-      'vmovapd ymm9, ymm4\n' +
-      '\n' +
-      'vextractf128 xmm0, ymm2, 1\n' +
-      'vbroadcastsd ymm5, xmm0\n' +
-      'shufpd xmm0, xmm0, 1\n' +
-      'vbroadcastsd ymm4, xmm0\n' +
-      'vextractf128 xmm0, ymm2, 0\n' +
-      'vbroadcastsd ymm7, xmm0\n' +
-      'shufpd xmm0, xmm0, 1\n' +
-      'vbroadcastsd ymm6, xmm0\n' +
-      'vmulpd ymm7, ymm3, ymm7\n' +
-      'vfmadd213pd ymm6, ymm2, ymm7\n' +
-      'vfmadd213pd ymm5, ymm1, ymm6\n' +
-      'vfmadd213pd ymm4, ymm0, ymm5\n' +
-      'vmovapd ymm10, ymm4\n' +
-      '\n' +
-      'vextractf128 xmm0, ymm3, 1\n' +
-      'vbroadcastsd ymm5, xmm0\n' +
-      'shufpd xmm0, xmm0, 1\n' +
-      'vbroadcastsd ymm4, xmm0\n' +
-      'vextractf128 xmm0, ymm3, 0\n' +
-      'vbroadcastsd ymm7, xmm0\n' +
-      'shufpd xmm0, xmm0, 1\n' +
-      'vbroadcastsd ymm6, xmm0\n' +
-      'vmulpd ymm7, ymm3, ymm7\n' +
-      'vfmadd213pd ymm6, ymm2, ymm7\n' +
-      'vfmadd213pd ymm5, ymm1, ymm6\n' +
-      'vfmadd213pd ymm4, ymm0, ymm5\n' +
-      'vmovapd ymm11, ymm4'
+    // return 'vextractf128 xmm0, ymm0, 1\n' +
+    //   'vbroadcastsd ymm5, xmm0\n' +
+    //   'shufpd xmm0, xmm0, 1\n' +
+    //   'vbroadcastsd ymm4, xmm0\n' +
+    //   'vextractf128 xmm0, ymm0, 0\n' +
+    //   'vbroadcastsd ymm7, xmm0\n' +
+    //   'shufpd xmm0, xmm0, 1\n' +
+    //   'vbroadcastsd ymm6, xmm0\n' +
+    //   'vmulpd ymm7, ymm3, ymm7\n' +
+    //   'vfmadd213pd ymm6, ymm2, ymm7\n' +
+    //   'vfmadd213pd ymm5, ymm1, ymm6\n' +
+    //   'vfmadd213pd ymm4, ymm0, ymm5\n' +
+    //   'vmovapd ymm8, ymm4\n' +
+    //   '\n' +
+    //   'vextractf128 xmm0, ymm1, 1\n' +
+    //   'vbroadcastsd ymm5, xmm0\n' +
+    //   'shufpd xmm0, xmm0, 1\n' +
+    //   'vbroadcastsd ymm4, xmm0\n' +
+    //   'vextractf128 xmm0, ymm1, 0\n' +
+    //   'vbroadcastsd ymm7, xmm0\n' +
+    //   'shufpd xmm0, xmm0, 1\n' +
+    //   'vbroadcastsd ymm6, xmm0\n' +
+    //   'vmulpd ymm7, ymm3, ymm7\n' +
+    //   'vfmadd213pd ymm6, ymm2, ymm7\n' +
+    //   'vfmadd213pd ymm5, ymm1, ymm6\n' +
+    //   'vfmadd213pd ymm4, ymm0, ymm5\n' +
+    //   'vmovapd ymm9, ymm4\n' +
+    //   '\n' +
+    //   'vextractf128 xmm0, ymm2, 1\n' +
+    //   'vbroadcastsd ymm5, xmm0\n' +
+    //   'shufpd xmm0, xmm0, 1\n' +
+    //   'vbroadcastsd ymm4, xmm0\n' +
+    //   'vextractf128 xmm0, ymm2, 0\n' +
+    //   'vbroadcastsd ymm7, xmm0\n' +
+    //   'shufpd xmm0, xmm0, 1\n' +
+    //   'vbroadcastsd ymm6, xmm0\n' +
+    //   'vmulpd ymm7, ymm3, ymm7\n' +
+    //   'vfmadd213pd ymm6, ymm2, ymm7\n' +
+    //   'vfmadd213pd ymm5, ymm1, ymm6\n' +
+    //   'vfmadd213pd ymm4, ymm0, ymm5\n' +
+    //   'vmovapd ymm10, ymm4\n' +
+    //   '\n' +
+    //   'vextractf128 xmm0, ymm3, 1\n' +
+    //   'vbroadcastsd ymm5, xmm0\n' +
+    //   'shufpd xmm0, xmm0, 1\n' +
+    //   'vbroadcastsd ymm4, xmm0\n' +
+    //   'vextractf128 xmm0, ymm3, 0\n' +
+    //   'vbroadcastsd ymm7, xmm0\n' +
+    //   'shufpd xmm0, xmm0, 1\n' +
+    //   'vbroadcastsd ymm6, xmm0\n' +
+    //   'vmulpd ymm7, ymm3, ymm7\n' +
+    //   'vfmadd213pd ymm6, ymm2, ymm7\n' +
+    //   'vfmadd213pd ymm5, ymm1, ymm6\n' +
+    //   'vfmadd213pd ymm4, ymm0, ymm5\n' +
+    //   'vmovapd ymm11, ymm4'
+    // Matrix Addition
+    // return 'vaddps ymm0, ymm4, ymm0\n' +
+    //   'vaddps ymm1, ymm5, ymm1\n' +
+    //   'vaddps ymm2, ymm6, ymm2\n' +
+    //   'vaddps ymm3, ymm7, ymm3'
+    // Prefix Sum
+    return 'vaddps ymm0, ymm1, ymm0\n' +
+      'vaddps ymm0, ymm2, ymm0\n' +
+      'vaddps ymm0, ymm3, ymm0\n' +
+      'vhaddps ymm0, ymm0, ymm0\n' +
+      'vhaddps ymm0, ymm0, ymm0\n' +
+      'vperm2f128 ymm1, ymm0, ymm0, 0x1\n' +
+      'vaddps ymm0, ymm1, ymm0'
   })
   registers.update(() => [
+    // TEST
     // { name: 'YMM0', size: 8, values: [8, 1, 3, 5, 7, 9, 2, 4] },
     // { name: 'YMM1', size: 8, values: [1, 3, 5, 7, 9, 2, 4, 6] },
     // { name: 'YMM2', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
     // { name: 'YMM3', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
     // { name: 'YMM4', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
     // { name: 'YMM5', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
-    { name: 'YMM0', size: 4, values: [3, 2, 1, 0] },
-    { name: 'YMM1', size: 4, values: [7, 6, 5, 4] },
-    { name: 'YMM2', size: 4, values: [11, 10, 9, 8] },
-    { name: 'YMM3', size: 4, values: [15, 14, 13, 12] },
-    { name: 'XMM0', size: 2, values: [0, 0] },
-    { name: 'YMM4', size: 4, values: [0, 0, 0, 0] },
-    { name: 'YMM5', size: 4, values: [0, 0, 0, 0] },
-    { name: 'YMM6', size: 4, values: [0, 0, 0, 0] },
-    { name: 'YMM7', size: 4, values: [0, 0, 0, 0] },
-    { name: 'YMM8', size: 4, values: [0, 0, 0, 0] },
-    { name: 'YMM9', size: 4, values: [0, 0, 0, 0] },
-    { name: 'YMM10', size: 4, values: [0, 0, 0, 0] },
-    { name: 'YMM11', size: 4, values: [0, 0, 0, 0] },
+    // Matrix Multiplication
+    // { name: 'YMM0', size: 4, values: [3, 2, 1, 0] },
+    // { name: 'YMM1', size: 4, values: [7, 6, 5, 4] },
+    // { name: 'YMM2', size: 4, values: [11, 10, 9, 8] },
+    // { name: 'YMM3', size: 4, values: [15, 14, 13, 12] },
+    // { name: 'XMM0', size: 2, values: [0, 0] },
+    // { name: 'YMM4', size: 4, values: [0, 0, 0, 0] },
+    // { name: 'YMM5', size: 4, values: [0, 0, 0, 0] },
+    // { name: 'YMM6', size: 4, values: [0, 0, 0, 0] },
+    // { name: 'YMM7', size: 4, values: [0, 0, 0, 0] },
+    // { name: 'YMM8', size: 4, values: [0, 0, 0, 0] },
+    // { name: 'YMM9', size: 4, values: [0, 0, 0, 0] },
+    // { name: 'YMM10', size: 4, values: [0, 0, 0, 0] },
+    // { name: 'YMM11', size: 4, values: [0, 0, 0, 0] },
+    // Matrix Addition + Prefix Sum
+    { name: 'YMM0', size: 8, values: [ 7,  6,  5,  4,  3,  2,  1,  0] },
+    { name: 'YMM1', size: 8, values: [15, 14, 13, 12, 11, 10,  9,  8] },
+    { name: 'YMM2', size: 8, values: [23, 22, 21, 20, 19, 18, 17, 16] },
+    { name: 'YMM3', size: 8, values: [31, 30, 29, 28, 27, 26, 25, 24] },
+    { name: 'YMM4', size: 8, values: [24, 25, 26, 27, 28, 29, 30, 31] },
+    { name: 'YMM5', size: 8, values: [16, 17, 18, 19, 20, 21, 22, 23] },
+    { name: 'YMM6', size: 8, values: [ 8,  9, 10, 11, 12, 13, 14, 15] },
+    { name: 'YMM7', size: 8, values: [ 0,  1,  2,  3,  4,  5,  6,  7] },
   ])
   const executeInstruction = (instructionStr) => {
     const tokens = instructionStr.split(/[\s,]+/)
@@ -125,25 +150,36 @@
       step = 1
       editorRef.highlightLine(step)
       registers.update(() => [
+        // TEST
         // { name: 'YMM0', size: 8, values: [8, 1, 3, 5, 7, 9, 2, 4] },
         // { name: 'YMM1', size: 8, values: [1, 3, 5, 7, 9, 2, 4, 6] },
         // { name: 'YMM2', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
         // { name: 'YMM3', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
         // { name: 'YMM4', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
         // { name: 'YMM5', size: 8, values: [0, 0, 0, 0, 0, 0, 0, 0] },
-        { name: 'YMM0', size: 4, values: [3, 2, 1, 0] },
-        { name: 'YMM1', size: 4, values: [7, 6, 5, 4] },
-        { name: 'YMM2', size: 4, values: [11, 10, 9, 8] },
-        { name: 'YMM3', size: 4, values: [15, 14, 13, 12] },
-        { name: 'XMM0', size: 2, values: [0, 0] },
-        { name: 'YMM4', size: 4, values: [0, 0, 0, 0] },
-        { name: 'YMM5', size: 4, values: [0, 0, 0, 0] },
-        { name: 'YMM6', size: 4, values: [0, 0, 0, 0] },
-        { name: 'YMM7', size: 4, values: [0, 0, 0, 0] },
-        { name: 'YMM8', size: 4, values: [0, 0, 0, 0] },
-        { name: 'YMM9', size: 4, values: [0, 0, 0, 0] },
-        { name: 'YMM10', size: 4, values: [0, 0, 0, 0] },
-        { name: 'YMM11', size: 4, values: [0, 0, 0, 0] },
+        // Matrix Multiplication
+        // { name: 'YMM0', size: 4, values: [3, 2, 1, 0] },
+        // { name: 'YMM1', size: 4, values: [7, 6, 5, 4] },
+        // { name: 'YMM2', size: 4, values: [11, 10, 9, 8] },
+        // { name: 'YMM3', size: 4, values: [15, 14, 13, 12] },
+        // { name: 'XMM0', size: 2, values: [0, 0] },
+        // { name: 'YMM4', size: 4, values: [0, 0, 0, 0] },
+        // { name: 'YMM5', size: 4, values: [0, 0, 0, 0] },
+        // { name: 'YMM6', size: 4, values: [0, 0, 0, 0] },
+        // { name: 'YMM7', size: 4, values: [0, 0, 0, 0] },
+        // { name: 'YMM8', size: 4, values: [0, 0, 0, 0] },
+        // { name: 'YMM9', size: 4, values: [0, 0, 0, 0] },
+        // { name: 'YMM10', size: 4, values: [0, 0, 0, 0] },
+        // { name: 'YMM11', size: 4, values: [0, 0, 0, 0] },
+        // Matrix Addition + Prefix Sum
+        { name: 'YMM0', size: 8, values: [ 7,  6,  5,  4,  3,  2,  1,  0] },
+        { name: 'YMM1', size: 8, values: [15, 14, 13, 12, 11, 10,  9,  8] },
+        { name: 'YMM2', size: 8, values: [23, 22, 21, 20, 19, 18, 17, 16] },
+        { name: 'YMM3', size: 8, values: [31, 30, 29, 28, 27, 26, 25, 24] },
+        { name: 'YMM4', size: 8, values: [24, 25, 26, 27, 28, 29, 30, 31] },
+        { name: 'YMM5', size: 8, values: [16, 17, 18, 19, 20, 21, 22, 23] },
+        { name: 'YMM6', size: 8, values: [ 8,  9, 10, 11, 12, 13, 14, 15] },
+        { name: 'YMM7', size: 8, values: [ 0,  1,  2,  3,  4,  5,  6,  7] },
       ])
       clear_history()
     }

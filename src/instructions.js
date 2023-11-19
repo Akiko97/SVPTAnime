@@ -306,4 +306,54 @@ export class Instructions {
         break
     }
   }
+  vaddps(reg1, reg2, reg3) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    reg3 = reg3.toUpperCase()
+    for (let i = 0; i < this.get_size(reg1); i++) {
+      this.assignment(reg1, i, this.get_values(reg2)[i] + this.get_values(reg3)[i], [
+        { name: reg2, index: i },
+        { name: reg3, index: i },
+      ])
+    }
+  }
+  vhaddps(reg1, reg2, reg3) {
+    this.clear_record()
+    reg1 = reg1.toUpperCase()
+    reg2 = reg2.toUpperCase()
+    reg3 = reg3.toUpperCase()
+    this.assignment(reg1, 0, this.get_values(reg2)[0] + this.get_values(reg2)[1], [
+      { name: reg2, index: 0 },
+      { name: reg2, index: 1 },
+    ])
+    this.assignment(reg1, 1, this.get_values(reg2)[2] + this.get_values(reg2)[3], [
+      { name: reg2, index: 2 },
+      { name: reg2, index: 3 },
+    ])
+    this.assignment(reg1, 2, this.get_values(reg3)[0] + this.get_values(reg3)[1], [
+      { name: reg3, index: 0 },
+      { name: reg3, index: 1 },
+    ])
+    this.assignment(reg1, 3, this.get_values(reg3)[2] + this.get_values(reg3)[3], [
+      { name: reg3, index: 2 },
+      { name: reg3, index: 3 },
+    ])
+    this.assignment(reg1, 4, this.get_values(reg2)[4] + this.get_values(reg2)[5], [
+      { name: reg2, index: 4 },
+      { name: reg2, index: 5 },
+    ])
+    this.assignment(reg1, 5, this.get_values(reg2)[6] + this.get_values(reg2)[7], [
+      { name: reg2, index: 6 },
+      { name: reg2, index: 7 },
+    ])
+    this.assignment(reg1, 6, this.get_values(reg3)[4] + this.get_values(reg3)[5], [
+      { name: reg3, index: 4 },
+      { name: reg3, index: 5 },
+    ])
+    this.assignment(reg1, 7, this.get_values(reg3)[6] + this.get_values(reg3)[7], [
+      { name: reg3, index: 6 },
+      { name: reg3, index: 7 },
+    ])
+  }
 }
